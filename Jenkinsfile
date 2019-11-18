@@ -1,4 +1,12 @@
-pipeline {
+t add -A
+git commit -m "Update username"
+
+# You may need to use your GitHub token as your password
+git push origin master
+
+# Create a new staging branch
+git checkout -b staging
+git push origin stagingpipeline {
   agent {
     kubernetes {
       yamlFile 'JenkinsPod.yaml'
@@ -6,7 +14,7 @@ pipeline {
   }
   environment {
     DOCKER_IMAGE_NAME = 'website'
-    DOCKER_HUB_ACCOUNT = 'USERNAME'
+    DOCKER_HUB_ACCOUNT = 'markw12'
   }
   stages {
     stage('Clone Repository') {
