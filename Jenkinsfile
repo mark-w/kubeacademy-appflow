@@ -1,4 +1,4 @@
-{
+pipeline {
   agent {
     kubernetes {
       yamlFile 'JenkinsPod.yaml'
