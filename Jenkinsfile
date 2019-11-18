@@ -1,12 +1,4 @@
-t add -A
-git commit -m "Update username"
-
-# You may need to use your GitHub token as your password
-git push origin master
-
-# Create a new staging branch
-git checkout -b staging
-git push origin stagingpipeline {
+pipeline {
   agent {
     kubernetes {
       yamlFile 'JenkinsPod.yaml'
@@ -44,11 +36,11 @@ git push origin stagingpipeline {
       steps {
         container('docker') {
             dir ("site") {
-                sh ("docker build -t ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} .")
+                          sh ("docker build -t ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} .")
                 sh ("docker push ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER}")
-                sh ("docker tag ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${JOB_NAME}-latest")
-                sh ("docker push ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:latest")
-            }
+                sh ("docker tag ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${env.BUILD_NUMBER} ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${BRANCH_NAME}-latest")
+                sh ("docker push ${DOCKER_HUB_ACCOUNT}/${DOCKER_IMAGE_NAME}:${BRANCH_NAME}-latest")  
+	  }
         }
       }
     }
